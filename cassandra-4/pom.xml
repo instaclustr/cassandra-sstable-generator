@@ -1,0 +1,97 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.instaclustr</groupId>
+    <artifactId>sstable-generator-parent</artifactId>
+    <version>1.0</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>cassandra-4</artifactId>
+  <version>1.0</version>
+
+  <properties>
+    <version.generator.api>1.0</version.generator.api>
+
+    <!-- this version is version used in Cassandra 4 itself -->
+    <version.cassandra.driver>3.6.0</version.cassandra.driver>
+    <version.cassandra>4.0-alpha3</version.cassandra>
+
+    <version.junit>4.12</version.junit>
+    <version.embedded.cassandra>3.0.2</version.embedded.cassandra>
+
+    <version.maven.shade.plugin>3.2.2</version.maven.shade.plugin>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.instaclustr</groupId>
+      <artifactId>sstable-generator-api</artifactId>
+      <version>${version.generator.api}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.instaclustr</groupId>
+      <artifactId>sstable-generator</artifactId>
+      <version>1.0</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.datastax.cassandra</groupId>
+      <artifactId>cassandra-driver-core</artifactId>
+      <version>${version.cassandra.driver}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.google.guava</groupId>
+          <artifactId>guava</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>io.netty</groupId>
+          <artifactId>netty-handler</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>io.netty</groupId>
+          <artifactId>netty-buffer</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>io.netty</groupId>
+          <artifactId>netty-codec</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.cassandra</groupId>
+      <artifactId>cassandra-all</artifactId>
+      <version>${version.cassandra}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>${version.maven.shade.plugin}</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <minimizeJar>false</minimizeJar>
+              <createDependencyReducedPom>true</createDependencyReducedPom>
+              <dependencyReducedPomLocation>${java.io.tmpdir}/dependency-reduced-pom.xml
+              </dependencyReducedPomLocation>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

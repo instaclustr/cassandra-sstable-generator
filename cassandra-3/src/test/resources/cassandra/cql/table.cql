@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS mykeyspace.mytable (id uuid, name text, surname text, PRIMARY KEY (id));
