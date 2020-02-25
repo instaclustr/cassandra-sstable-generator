@@ -103,7 +103,7 @@ public interface RowMapper {
      *
      * @return list of rows to be created containing list of cells
      */
-    List<List<Object>> get();
+    Stream<List<Object>> get();
 
     /**
      * Logically same as {@link #map(List)} but all data per row
