@@ -29,9 +29,9 @@ public class RandomGenerator implements Generator {
 
     static class RandomIterator implements Iterator<MappedRow> {
 
-        private int currentRecords = 0;
         private final int numberOfRecords;
         private final RowMapper rowMapper;
+        private int currentRecords = 0;
 
         public RandomIterator(final RowMapper rowMapper,
                               final int numberOfRecords) {

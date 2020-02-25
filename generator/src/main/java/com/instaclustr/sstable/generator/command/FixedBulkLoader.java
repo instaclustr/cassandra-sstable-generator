@@ -9,10 +9,10 @@ import com.instaclustr.sstable.generator.specs.BulkLoaderSpec;
 import picocli.CommandLine.Command;
 
 @Command(name = "fixed",
-         mixinStandardHelpOptions = true,
-         description = "tool for bulk-loading of fixed data",
-         sortOptions = false,
-         versionProvider = CLIApplication.class)
+    mixinStandardHelpOptions = true,
+    description = "tool for bulk-loading of fixed data",
+    sortOptions = false,
+    versionProvider = CLIApplication.class)
 public class FixedBulkLoader extends BulkLoader {
 
     @Override

@@ -11,17 +11,12 @@ import picocli.CommandLine.Spec;
 public class CLIApplication extends JarManifestVersionProvider implements Runnable {
 
     @Option(names = {"-V", "--version"},
-            versionHelp = true,
-            description = "print version information and exit")
+        versionHelp = true,
+        description = "print version information and exit")
     public boolean version;
 
     @Spec
     public CommandSpec spec;
-
-    @Override
-    public String getImplementationTitle() {
-        return "loader";
-    }
 
     public static void main(String[] args) {
         System.exit(execute(new CommandLine(new CLIApplication()), args));
@@ -37,17 +32,22 @@ public class CLIApplication extends JarManifestVersionProvider implements Runnab
 
     public static int execute(CommandLine commandLine, String... args) {
         return commandLine
-                .setErr(new PrintWriter(System.err))
-                .setOut(new PrintWriter(System.err))
-                .setUnmatchedArgumentsAllowed(true)
-                .setColorScheme(new CommandLine.Help.ColorScheme.Builder().ansi(CommandLine.Help.Ansi.ON).build())
-                .setExecutionExceptionHandler((ex, cmdLine, parseResult) -> {
+            .setErr(new PrintWriter(System.err))
+            .setOut(new PrintWriter(System.err))
+            .setUnmatchedArgumentsAllowed(true)
+            .setColorScheme(new CommandLine.Help.ColorScheme.Builder().ansi(CommandLine.Help.Ansi.ON).build())
+            .setExecutionExceptionHandler((ex, cmdLine, parseResult) -> {
 
-                    ex.printStackTrace();
+                ex.printStackTrace();
 
-                    return 1;
-                })
-                .execute(args);
+                return 1;
+            })
+            .execute(args);
+    }
+
+    @Override
+    public String getImplementationTitle() {
+        return "loader";
     }
 
     @Override

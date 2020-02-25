@@ -33,17 +33,17 @@ public class CustomBulkLoader {
         OutputHandler handler = new OutputHandler.SystemOutput(options.verbose, options.debug);
 
         SSTableLoader loader = new SSTableLoader(
-                options.directory.getAbsoluteFile(),
-                new BulkLoader.ExternalClient(
-                        options.hosts,
-                        options.nativePort,
-                        options.authProvider,
-                        options.storagePort,
-                        options.sslStoragePort,
-                        options.serverEncOptions,
-                        buildSSLOptions(options.clientEncOptions)),
-                handler,
-                options.connectionsPerHost);
+            options.directory.getAbsoluteFile(),
+            new BulkLoader.ExternalClient(
+                options.hosts,
+                options.nativePort,
+                options.authProvider,
+                options.storagePort,
+                options.sslStoragePort,
+                options.serverEncOptions,
+                buildSSLOptions(options.clientEncOptions)),
+            handler,
+            options.connectionsPerHost);
 
         DatabaseDescriptor.setStreamThroughputOutboundMegabitsPerSec(options.throttle);
         DatabaseDescriptor.setInterDCStreamThroughputOutboundMegabitsPerSec(options.interDcThrottle);
@@ -95,8 +95,8 @@ public class CustomBulkLoader {
         }
 
         return builder()
-                .withSSLContext(sslContext)
-                .withCipherSuites(clientEncryptionOptions.cipher_suites)
-                .build();
+            .withSSLContext(sslContext)
+            .withCipherSuites(clientEncryptionOptions.cipher_suites)
+            .build();
     }
 }

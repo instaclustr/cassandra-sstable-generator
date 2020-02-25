@@ -52,24 +52,6 @@ public abstract class BulkLoader implements Runnable {
         }
     }
 
-    private static class GenerationThread extends Thread {
-        private final Generator generator;
-        private final RowMapper rowMapper;
-        private boolean status = false;
-
-        public GenerationThread(final Generator generator,
-                                final RowMapper rowMapper) {
-            this.generator = generator;
-            this.rowMapper = rowMapper;
-        }
-
-        @Override
-        public void run() {
-            generator.generate(rowMapper);
-            status = true;
-        }
-    }
-
     private SSTableGenerator getSSTableGenerator() {
         final ServiceLoader<SSTableGenerator> serviceLoader = ServiceLoader.load(SSTableGenerator.class);
 
@@ -84,7 +66,7 @@ public abstract class BulkLoader implements Runnable {
 
     private RowMapper getRowMapper() {
         RowMapper rowMapper = getRowMapperFromFlag()
-                .orElseGet(() -> getRowMapperFromServiceLoader().orElseThrow(() -> new SSTableGeneratorException("Unable to create an instace of RowMapper.")));
+            .orElseGet(() -> getRowMapperFromServiceLoader().orElseThrow(() -> new SSTableGeneratorException("Unable to create an instace of RowMapper.")));
 
         if (rowMapper.insertStatement() == null) {
             throw new SSTableGeneratorException(format("RowMapper implementation %s has insertStatement() method returning null.",
@@ -121,5 +103,24 @@ public abstract class BulkLoader implements Runnable {
         }
 
         return Optional.empty();
+    }
+
+    private static class GenerationThread extends Thread {
+
+        private final Generator generator;
+        private final RowMapper rowMapper;
+        private boolean status = false;
+
+        public GenerationThread(final Generator generator,
+                                final RowMapper rowMapper) {
+            this.generator = generator;
+            this.rowMapper = rowMapper;
+        }
+
+        @Override
+        public void run() {
+            generator.generate(rowMapper);
+            status = true;
+        }
     }
 }

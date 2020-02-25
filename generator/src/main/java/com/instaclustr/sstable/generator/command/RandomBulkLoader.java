@@ -9,10 +9,10 @@ import com.instaclustr.sstable.generator.specs.BulkLoaderSpec;
 import picocli.CommandLine.Command;
 
 @Command(name = "random",
-         mixinStandardHelpOptions = true,
-         description = "tool for bulk-loading of random data",
-         sortOptions = false,
-         versionProvider = CLIApplication.class)
+    mixinStandardHelpOptions = true,
+    description = "tool for bulk-loading of random data",
+    sortOptions = false,
+    versionProvider = CLIApplication.class)
 public class RandomBulkLoader extends BulkLoader {
 
     public static void main(final String[] args) {

@@ -70,9 +70,9 @@ public class Cassandra4SSTableGenerator extends SSTableGenerator {
         }
 
         builder.inDirectory(tableDir.toFile())
-               .forTable(createSchemaStatement)
-               .using(rowMapper.insertStatement())
-               .withBufferSizeInMB(spec.bufferSize);
+            .forTable(createSchemaStatement)
+            .using(rowMapper.insertStatement())
+            .withBufferSizeInMB(spec.bufferSize);
 
         if (spec.sorted) {
             builder.sorted();

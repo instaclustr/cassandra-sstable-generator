@@ -30,8 +30,8 @@ public abstract class PartitionerConverter<T> implements CommandLine.ITypeConver
         @Override
         public String toString() {
             return "Partitioner{" +
-                    "name='" + name + '\'' +
-                    "} " + super.toString();
+                "name='" + name + '\'' +
+                "} " + super.toString();
         }
     }
 }

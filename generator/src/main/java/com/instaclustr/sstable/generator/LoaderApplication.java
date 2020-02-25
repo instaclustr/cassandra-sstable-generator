@@ -8,8 +8,8 @@ import picocli.CommandLine;
 import picocli.CommandLine.Command;
 
 @Command(subcommands = {CSVBulkLoader.class, RandomBulkLoader.class, FixedBulkLoader.class},
-         synopsisSubcommandLabel = "COMMAND",
-         versionProvider = LoaderApplication.class
+    synopsisSubcommandLabel = "COMMAND",
+    versionProvider = LoaderApplication.class
 )
 public class LoaderApplication extends CLIApplication {
 

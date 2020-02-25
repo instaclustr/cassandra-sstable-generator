@@ -15,6 +15,18 @@ import picocli.CommandLine.Model.CommandSpec;
 
 public abstract class JarManifestVersionProvider implements IVersionProvider {
 
+    public static void logCommandVersionInformation(final CommandSpec commandSpec) {
+        if (commandSpec != null) {
+            final Logger logger = LoggerFactory.getLogger(commandSpec.userObject().getClass());
+
+            if (commandSpec.version() == null) {
+                logger.info("{} version: unknown", commandSpec.name());
+            }
+
+            logger.info("{} version: {}", commandSpec.name(), String.join(", ", commandSpec.version()));
+        }
+    }
+
     @Override
     public String[] getVersion() throws IOException {
         final Enumeration<URL> resources = CommandLine.class.getClassLoader().getResources("META-INF/MANIFEST.MF");
@@ -39,9 +51,9 @@ public abstract class JarManifestVersionProvider implements IVersionProvider {
         }
 
         return new String[]{
-                String.format("%s %s", getImplementationTitle(), implementationVersion.orElse("development build")),
-                String.format("Build time: %s", buildTime.orElse("unknown")),
-                String.format("Git commit: %s", gitCommit.orElse("unknown")),
+            String.format("%s %s", getImplementationTitle(), implementationVersion.orElse("development build")),
+            String.format("Build time: %s", buildTime.orElse("unknown")),
+            String.format("Git commit: %s", gitCommit.orElse("unknown")),
         };
     }
 
@@ -50,17 +62,5 @@ public abstract class JarManifestVersionProvider implements IVersionProvider {
     }
 
     public abstract String getImplementationTitle();
-
-    public static void logCommandVersionInformation(final CommandSpec commandSpec) {
-        if (commandSpec != null) {
-            final Logger logger = LoggerFactory.getLogger(commandSpec.userObject().getClass());
-
-            if (commandSpec.version() == null) {
-                logger.info("{} version: unknown", commandSpec.name());
-            }
-
-            logger.info("{} version: {}", commandSpec.name(), String.join(", ", commandSpec.version()));
-        }
-    }
 }
 

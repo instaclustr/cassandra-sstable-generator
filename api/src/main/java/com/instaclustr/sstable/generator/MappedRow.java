@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class MappedRow {
+
     public final List<Object> values;
     public final List<String> types;
 

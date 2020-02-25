@@ -1,14 +1,12 @@
 package com.instaclustr.sstable.generator;
 
 import static com.datastax.driver.core.querybuilder.QueryBuilder.select;
-import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertFalse;
 
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -117,19 +115,19 @@ public class BulkGeneratorTest {
 
         try {
             return Files.list(confDir)
-                        .filter(path -> path.getFileName().toString().contains("-cassandra.yaml"))
-                        .findFirst()
-                        .orElseThrow(RuntimeException::new);
+                .filter(path -> path.getFileName().toString().contains("-cassandra.yaml"))
+                .findFirst()
+                .orElseThrow(RuntimeException::new);
         } catch (final Exception e) {
             throw new IllegalStateException("Unable to list or there is not any file ending on -cassandra.yaml" + confDir);
         }
     }
 
     @Command(name = "fixed",
-             mixinStandardHelpOptions = true,
-             description = "tool for bulk-loading of fixed data",
-             sortOptions = false,
-             versionProvider = CLIApplication.class)
+        mixinStandardHelpOptions = true,
+        description = "tool for bulk-loading of fixed data",
+        sortOptions = false,
+        versionProvider = CLIApplication.class)
     public static final class TestBulkLoader extends com.instaclustr.sstable.generator.BulkLoader {
 
         @Override
@@ -148,11 +146,7 @@ public class BulkGeneratorTest {
             @Override
             public void generate(final RowMapper rowMapper) {
                 try {
-                    final List<List<Object>> listOfRows = rowMapper.get();
-
-                    if (listOfRows != null) {
-                        ssTableGenerator.generate(rowMapper.get().stream().filter(Objects::nonNull).map(MappedRow::new).collect(toList()).iterator());
-                    }
+                    ssTableGenerator.generate(rowMapper.get().filter(Objects::nonNull).map(MappedRow::new).iterator());
                 } catch (final Exception ex) {
                     throw new SSTableGeneratorException("Unable to generate SSTables from FixedLoader.", ex);
                 }

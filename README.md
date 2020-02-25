@@ -147,24 +147,23 @@ public class RowMapper1 implements RowMapper {
     }
 
     @Override
-    public List<List<Object>> get() {
-        return new ArrayList<List<Object>>() {{
-            add(new ArrayList<Object>() {{
+    public Stream<List<Object>> get() {
+        return Stream.of(
+            new ArrayList<Object>() {{
                 add(UUID_1);
                 add("John");
                 add("Doe");
-            }});
-            add(new ArrayList<Object>() {{
+            }},
+            new ArrayList<Object>() {{
                 add(UUID_2);
                 add("Marry");
                 add("Poppins");
-            }});
-            add(new ArrayList<Object>() {{
+            }},
+            new ArrayList<Object>() {{
                 add(UUID_3);
                 add("Jim");
                 add("Jack");
             }});
-        }};
     }
 
     @Override

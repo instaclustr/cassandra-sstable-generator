@@ -1,8 +1,5 @@
 package com.instaclustr.sstable.generator.loader;
 
-import static java.util.stream.Collectors.toList;
-
-import java.util.List;
 import java.util.Objects;
 
 import com.instaclustr.sstable.generator.Generator;
@@ -22,11 +19,7 @@ public class FixedGenerator implements Generator {
     @Override
     public void generate(final RowMapper rowMapper) {
         try {
-            final List<List<Object>> listOfRows = rowMapper.get();
-
-            if (listOfRows != null) {
-                ssTableGenerator.generate(rowMapper.get().stream().filter(Objects::nonNull).map(MappedRow::new).collect(toList()).iterator());
-            }
+            ssTableGenerator.generate(rowMapper.get().filter(Objects::nonNull).map(MappedRow::new).iterator());
         } catch (final Exception ex) {
             throw new SSTableGeneratorException("Unable to generate SSTables from FixedLoader.", ex);
         }
