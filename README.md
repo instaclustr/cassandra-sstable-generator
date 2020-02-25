@@ -1,6 +1,6 @@
 # cassandra-sstable-generator
 
-image:https://circleci.com/gh/instaclustr/cassandra-sstable-generator.svg?style=svg["Instaclustr",link="https://circleci.com/gh/instaclustr/cassandra-sstable-generator"]
+![Instaclustr](https://circleci.com/gh/instaclustr/cassandra-sstable-generator.svg?style=svg)
 
 CLI tool generating Cassandra SSTables
 
