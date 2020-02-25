@@ -1,5 +1,7 @@
 # cassandra-sstable-generator
 
+image:https://circleci.com/gh/instaclustr/cassandra-sstable-generator.svg?style=svg["Instaclustr",link="https://circleci.com/gh/instaclustr/cassandra-sstable-generator"]
+
 CLI tool generating Cassandra SSTables
 
 This tool is simply generating SSTables programmatically. It uses Cassandra's `CQLSSTableWriter`. 

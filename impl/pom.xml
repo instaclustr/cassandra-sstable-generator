@@ -10,7 +10,7 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>impl</artifactId>
+  <artifactId>sstable-generator-impl</artifactId>
   <version>1.0</version>
 
   <description>Example of implementation module with generation code</description>
