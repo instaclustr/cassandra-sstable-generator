@@ -196,3 +196,5 @@ respective `cassandra-4.jar` on the class path as shown above.
 This in practice means that you need to compile only `impl` module which contains one class so the compilation 
 and JAR building will take literally few seconds (less the 1 sec here). The command line arguments and all will look 
 just same.
+
+Please see https://www.instaclustr.com/support/documentation/announcements/instaclustr-open-source-project-status/ for Instaclustr support status of this project
