@@ -120,6 +120,7 @@ public abstract class BulkLoader implements Runnable {
         @Override
         public void run() {
             generator.generate(rowMapper);
+            logger.info("Generation has finished.");
             status = true;
         }
     }

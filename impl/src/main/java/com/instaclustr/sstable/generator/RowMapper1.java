@@ -5,17 +5,13 @@ import static java.lang.String.format;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 public class RowMapper1 implements RowMapper {
 
-
-    public static final String KEYSPACE = "mykeyspace";
-    public static final String TABLE = "mytable";
-
-    public static final UUID UUID_1 = UUID.randomUUID();
-    public static final UUID UUID_2 = UUID.randomUUID();
-    public static final UUID UUID_3 = UUID.randomUUID();
+    public static final String KEYSPACE = "test";
+    public static final String TABLE = "test";
 
     @Override
     public List<Object> map(final List<String> row) {
@@ -24,31 +20,28 @@ public class RowMapper1 implements RowMapper {
 
     @Override
     public Stream<List<Object>> get() {
-        return Stream.of(
-            new ArrayList<Object>() {{
-                add(UUID_1);
-                add("John");
-                add("Doe");
-            }},
-            new ArrayList<Object>() {{
-                add(UUID_2);
-                add("Marry");
-                add("Poppins");
-            }},
-            new ArrayList<Object>() {{
-                add(UUID_3);
-                add("Jim");
-                add("Jack");
-            }});
+        return Stream.generate((Supplier<List<Object>>) () -> new ArrayList<Object>() {{
+            add(UUID.randomUUID());
+            add(UUID.randomUUID().toString());
+            add(UUID.randomUUID().toString());
+            add(UUID.randomUUID().toString());
+            add(UUID.randomUUID().toString());
+        }}).limit(10);
     }
 
     @Override
     public List<Object> random() {
-        return null;
+        return new ArrayList<Object>() {{
+            add(UUID.randomUUID());
+            add(UUID.randomUUID().toString());
+            add(UUID.randomUUID().toString());
+            add(UUID.randomUUID().toString());
+            add(UUID.randomUUID().toString());
+        }};
     }
 
     @Override
     public String insertStatement() {
-        return format("INSERT INTO %s.%s (id, name, surname) VALUES (?, ?, ?);", KEYSPACE, TABLE);
+        return format("INSERT INTO %s.%s (id, name, surname, description, profession) VALUES (?, ?, ?, ?, ?);", KEYSPACE, TABLE);
     }
 }

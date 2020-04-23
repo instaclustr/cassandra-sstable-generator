@@ -1,1 +1,1 @@
-CREATE TABLE IF NOT EXISTS mykeyspace.mytable (id uuid, name text, surname text, PRIMARY KEY (id));
+CREATE TABLE IF NOT EXISTS test.test (id uuid, name text, surname text, description text, profession text, PRIMARY KEY (id));

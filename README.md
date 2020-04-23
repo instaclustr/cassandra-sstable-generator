@@ -40,7 +40,7 @@ The concrete example of the invocation would be:
 
 ```
 java \
-    -cp impl/target/impl-1.0.jar:generator/target/sstable-generator-1.0.jar:cassandra-3/target/cassandra-3-1.0.jar \
+    -cp impl/target/sstable-generator-impl-1.0:generator/target/sstable-generator-1.0.jar:cassandra-3/target/cassandra-3-1.0.jar \
     com.instaclustr.sstable.generator.LoaderApplication \
     fixed \
     --keyspace mykeyspace \

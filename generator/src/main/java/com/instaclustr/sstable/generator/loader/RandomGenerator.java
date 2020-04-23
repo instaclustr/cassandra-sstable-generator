@@ -7,8 +7,12 @@ import com.instaclustr.sstable.generator.MappedRow;
 import com.instaclustr.sstable.generator.RowMapper;
 import com.instaclustr.sstable.generator.SSTableGenerator;
 import com.instaclustr.sstable.generator.exception.SSTableGeneratorException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class RandomGenerator implements Generator {
+
+    private static final Logger logger = LoggerFactory.getLogger(RandomGenerator.class);
 
     private final SSTableGenerator ssTableGenerator;
     private final int numberOfRecords;
@@ -48,7 +52,7 @@ public class RandomGenerator implements Generator {
         public MappedRow next() {
 
             if (currentRecords % 10000 == 0) {
-                System.out.println(currentRecords);
+                logger.info("Generated records: {}", currentRecords);
             }
 
             return new MappedRow(rowMapper.random());

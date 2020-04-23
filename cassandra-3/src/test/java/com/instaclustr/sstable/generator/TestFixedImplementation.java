@@ -9,8 +9,8 @@ import java.util.stream.Stream;
 
 public class TestFixedImplementation implements RowMapper {
 
-    public static final String KEYSPACE = "mykeyspace";
-    public static final String TABLE = "mytable";
+    public static final String KEYSPACE = "test";
+    public static final String TABLE = "test";
 
     public static final UUID UUID_1 = UUID.randomUUID();
     public static final UUID UUID_2 = UUID.randomUUID();

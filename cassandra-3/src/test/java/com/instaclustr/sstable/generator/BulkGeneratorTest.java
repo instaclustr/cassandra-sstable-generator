@@ -32,11 +32,11 @@ import picocli.CommandLine.Command;
 @RunWith(JUnit4.class)
 public class BulkGeneratorTest {
 
-    private static final String CASSANDRA_VERSION = "3.11.6";
+    private static final String CASSANDRA_VERSION = "3.11.8";
 
-    private static final String KEYSPACE = "mykeyspace";
+    private static final String KEYSPACE = "test";
 
-    private static final String TABLE = "mytable";
+    private static final String TABLE = "test";
 
     private static Artifact CASSANDRA_ARTIFACT = Artifact.ofVersion(Version.of(CASSANDRA_VERSION));
 
@@ -48,19 +48,19 @@ public class BulkGeneratorTest {
 
         final Path cassandraDir = new File("target/cassandra").toPath().toAbsolutePath();
 
-        EmbeddedCassandraFactory cassandraToBackupFactory = new EmbeddedCassandraFactory();
-        cassandraToBackupFactory.setWorkingDirectory(cassandraDir);
-        cassandraToBackupFactory.setArtifact(CASSANDRA_ARTIFACT);
-        cassandraToBackupFactory.getJvmOptions().add("-Xmx1g");
-        cassandraToBackupFactory.getJvmOptions().add("-Xms1g");
-        Cassandra cassandraToBackup = cassandraToBackupFactory.create();
+        EmbeddedCassandraFactory cassandraFactory = new EmbeddedCassandraFactory();
+        cassandraFactory.setWorkingDirectory(cassandraDir);
+        cassandraFactory.setArtifact(CASSANDRA_ARTIFACT);
+        cassandraFactory.getJvmOptions().add("-Xmx1g");
+        cassandraFactory.getJvmOptions().add("-Xms1g");
+        Cassandra cassandra = cassandraFactory.create();
 
         try {
-            cassandraToBackup.start();
+            cassandra.start();
 
             executeWithSession(session -> {
-                session.execute("CREATE KEYSPACE mykeyspace WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1 };");
-                session.execute("CREATE TABLE IF NOT EXISTS mykeyspace.mytable (id uuid, name text, surname text, PRIMARY KEY (id));");
+                session.execute(String.format("CREATE KEYSPACE %s WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1 };", KEYSPACE));
+                session.execute(String.format("CREATE TABLE IF NOT EXISTS %s.%s (id uuid, name text, surname text, PRIMARY KEY (id));", KEYSPACE, TABLE));
             });
 
             // SSTable generation
@@ -99,7 +99,7 @@ public class BulkGeneratorTest {
 
             executeWithSession(session -> assertFalse(session.execute(select().from(KEYSPACE, TABLE)).all().isEmpty()));
         } finally {
-            cassandraToBackup.stop();
+            cassandra.stop();
         }
     }
 
