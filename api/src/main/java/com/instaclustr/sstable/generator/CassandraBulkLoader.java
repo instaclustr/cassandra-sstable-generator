@@ -1,4 +1,4 @@
-package org.apache.cassandra.tools;
+package com.instaclustr.sstable.generator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -6,6 +6,7 @@ import java.util.Collection;
 import com.instaclustr.sstable.generator.cli.CLIApplication;
 import com.instaclustr.sstable.generator.exception.SSTableGeneratorException;
 import com.instaclustr.sstable.generator.specs.CassandraBulkLoaderSpec;
+import com.instaclustr.sstable.generator.specs.CassandraBulkLoaderSpec.CassandraVersion;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Mixin;
 
@@ -37,6 +38,11 @@ public class CassandraBulkLoader implements Runnable {
 
         flags.add("-f");
         flags.add(cassandraBulkLoaderSpec.cassandraYaml.toFile().getAbsolutePath());
+
+        if (cassandraBulkLoaderSpec.cassandraVersion == CassandraVersion.V4) {
+            flags.add("-k");
+            flags.add(cassandraBulkLoaderSpec.keyspace);
+        }
 
         flags.add(cassandraBulkLoaderSpec.sstablesDir.toString());
 

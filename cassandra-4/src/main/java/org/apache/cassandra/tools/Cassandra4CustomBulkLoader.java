@@ -4,7 +4,7 @@ import com.instaclustr.sstable.generator.CassandraBulkLoader;
 import com.instaclustr.sstable.generator.cli.CLIApplication;
 import picocli.CommandLine;
 
-public class Cassandra3CustomBulkLoader extends CassandraBulkLoader {
+public class Cassandra4CustomBulkLoader extends CassandraBulkLoader {
 
     public static void main(String[] args) {
         System.exit(CLIApplication.execute(new CommandLine(new CassandraBulkLoader()), args));
@@ -14,7 +14,7 @@ public class Cassandra3CustomBulkLoader extends CassandraBulkLoader {
     public void run0(final String[] flags) {
         try {
             CustomBulkLoader.main(flags);
-        } catch (BulkLoadException ex) {
+        } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }

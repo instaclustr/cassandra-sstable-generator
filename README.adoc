@@ -52,6 +52,9 @@ java \
     --threads 2
 ----
 
+**Please be aware that you need to have all libraries of Apache Cassanra on the classpath as well. For
+that reason, please use `./run.sh` script and modify it to your needs in order to generate sstables.**
+
 No `command` executes default command - `help`:
 
 ----

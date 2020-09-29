@@ -19,3 +19,5 @@ build/_output
 /**/.attach*
 
 impl/src/main/resources/schema.cql
+
+cassandra.logdir_IS_UNDEFINED/*
