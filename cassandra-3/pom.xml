@@ -11,17 +11,16 @@
   </parent>
   
   <artifactId>sstable-generator-cassandra-3</artifactId>
-  <version>1.0</version>
+  <version>1.1</version>
   
   <properties>
-    <version.generator.api>1.0</version.generator.api>
+    <version.generator.api>1.1</version.generator.api>
     <!-- this version is version used in Cassandra 4 itself -->
     <version.cassandra.driver>3.0.1</version.cassandra.driver>
     <version.cassandra>3.11.8</version.cassandra>
     
     <version.junit>4.12</version.junit>
     <version.awaitility>3.1.6</version.awaitility>
-    <cassandra.driver.version>4.4.0</cassandra.driver.version>
     <version.embedded.cassandra>3.0.2</version.embedded.cassandra>
     
     <version.maven.shade.plugin>3.2.4</version.maven.shade.plugin>

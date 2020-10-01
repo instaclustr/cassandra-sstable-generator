@@ -11,10 +11,10 @@
   </parent>
   
   <artifactId>sstable-generator-cassandra-4</artifactId>
-  <version>1.0</version>
+  <version>1.1</version>
   
   <properties>
-    <version.generator.api>1.0</version.generator.api>
+    <version.generator.api>1.1</version.generator.api>
     
     <!-- this version is version used in Cassandra 4 itself -->
     <version.cassandra.driver>3.6.0</version.cassandra.driver>
