@@ -10,7 +10,7 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
   
-  <artifactId>cassandra-4</artifactId>
+  <artifactId>sstable-generator-cassandra-4</artifactId>
   <version>1.0</version>
   
   <properties>
