@@ -1,6 +1,6 @@
 # cassandra-sstable-generator
 
-image:https://img.shields.io/maven-central/v/com.instaclustr/cassandra-sstable-generator.svg?label=Maven%20Central[link=https://search.maven.org/search?q=g:%22com.instaclustr%22%20AND%20a:%22cassandra-sstable-generator%22]
+image:https://img.shields.io/maven-central/v/com.instaclustr/sstable-generator.svg?label=Maven%20Central[link=https://search.maven.org/search?q=g:%22com.instaclustr%22%20AND%20a:%22sstable-generator%22]
 
 image:https://circleci.com/gh/instaclustr/cassandra-sstable-generator.svg?style=svg["Instaclustr",link="https://circleci.com/gh/instaclustr/cassandra-sstable-generator"]
 
