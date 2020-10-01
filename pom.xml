@@ -15,7 +15,8 @@
     <module>cassandra-3</module>
     <module>cassandra-4</module>
   </modules>
-
+  
+  <name>sstable-generator</name>
   <description>Tool for creation of Cassandra SSTables programmatically</description>
   <url>https://github.com/instaclustr/cassandra-sstable-generator</url>
 
