@@ -2,36 +2,36 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
+  
   <parent>
     <groupId>com.instaclustr</groupId>
     <artifactId>sstable-generator-parent</artifactId>
-    <version>1.0</version>
+    <version>1.2</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
-
+  
   <artifactId>sstable-generator</artifactId>
-  <version>1.1</version>
-
+  <version>1.2</version>
+  
   <properties>
     <super.csv.version>2.1.0</super.csv.version>
-
+    
     <jul.version>1.7.16</jul.version>
-
+    
     <maven.shade.plugin.version>3.2.1</maven.shade.plugin.version>
     <maven.jar.plugin.version>3.1.1</maven.jar.plugin.version>
     <git.command.plugin.version>2.2.4</git.command.plugin.version>
-
+    
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
-
+  
   <dependencies>
     <dependency>
       <groupId>com.instaclustr</groupId>
       <artifactId>sstable-generator-api</artifactId>
-      <version>1.1</version>
+      <version>${project.version}</version>
     </dependency>
-
+    
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>jul-to-slf4j</artifactId>
@@ -43,7 +43,7 @@
       <version>${super.csv.version}</version>
     </dependency>
   </dependencies>
-
+  
   <build>
     <finalName>sstable-generator</finalName>
     <plugins>

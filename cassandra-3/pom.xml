@@ -6,15 +6,15 @@
   <parent>
     <groupId>com.instaclustr</groupId>
     <artifactId>sstable-generator-parent</artifactId>
-    <version>1.0</version>
+    <version>1.2</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   
   <artifactId>sstable-generator-cassandra-3</artifactId>
-  <version>1.1</version>
+  <version>1.2</version>
   
   <properties>
-    <version.generator.api>1.1</version.generator.api>
+    <version.generator.api>${project.version}</version.generator.api>
     <!-- this version is version used in Cassandra 3 itself -->
     <version.cassandra.driver>3.0.1</version.cassandra.driver>
     <version.cassandra>3.11.8</version.cassandra>
