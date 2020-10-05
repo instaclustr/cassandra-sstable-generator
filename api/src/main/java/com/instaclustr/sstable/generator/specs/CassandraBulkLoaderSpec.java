@@ -27,7 +27,7 @@ public class CassandraBulkLoaderSpec {
 
     @Option(names = {"--cassandra-version"},
         converter = CassandraVersionConverter.class,
-        description = "Version of Cassandra to load for, might be 3 or 4, defaults to 3")
+        description = "Version of Cassandra to load for, might be 2, 3 or 4, defaults to 3")
     public CassandraVersion cassandraVersion;
 
     private static final class CassandraVersionConverter implements ITypeConverter<CassandraVersion> {
@@ -39,6 +39,7 @@ public class CassandraBulkLoaderSpec {
     }
 
     public enum CassandraVersion {
+        V2("2"),
         V3("3"),
         V4("4");
 

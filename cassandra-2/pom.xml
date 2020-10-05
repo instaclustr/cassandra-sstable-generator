@@ -10,14 +10,14 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
   
-  <artifactId>sstable-generator-cassandra-3</artifactId>
+  <artifactId>sstable-generator-cassandra-2</artifactId>
   <version>1.1</version>
   
   <properties>
     <version.generator.api>1.1</version.generator.api>
-    <!-- this version is version used in Cassandra 3 itself -->
+    <!-- this version is version used in Cassandra 4 itself -->
     <version.cassandra.driver>3.0.1</version.cassandra.driver>
-    <version.cassandra>3.11.8</version.cassandra>
+    <version.cassandra>2.2.18</version.cassandra>
     
     <version.junit>4.12</version.junit>
     <version.awaitility>3.1.6</version.awaitility>
@@ -66,6 +66,12 @@
       <artifactId>cassandra-all</artifactId>
       <version>${version.cassandra}</version>
       <scope>provided</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>16.0.1</version>
     </dependency>
     
     <dependency>

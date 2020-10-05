@@ -21,7 +21,9 @@ import com.instaclustr.sstable.generator.cli.CLIApplication;
 import com.instaclustr.sstable.generator.exception.SSTableGeneratorException;
 import com.instaclustr.sstable.generator.specs.BulkLoaderSpec;
 import com.instaclustr.sstable.generator.specs.CassandraBulkLoaderSpec;
-import org.apache.cassandra.tools.Cassandra3CustomBulkLoader;
+import com.instaclustr.sstable.generator.specs.CassandraBulkLoaderSpec.CassandraVersion;
+import org.apache.cassandra.config.DatabaseDescriptor;
+import org.apache.cassandra.tools.Cassandra4CustomBulkLoader;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -30,9 +32,9 @@ import org.junit.runners.JUnit4;
 import picocli.CommandLine.Command;
 
 @RunWith(JUnit4.class)
-public class BulkGeneratorTest {
+public class Cassandra4BulkGeneratorTest {
 
-    private static final String CASSANDRA_VERSION = System.getProperty("cassandra.version", "3.11.8");
+    private static final String CASSANDRA_VERSION = System.getProperty("cassandra.version", "4.0-beta2");
 
     private static final String KEYSPACE = "test";
 
@@ -53,9 +55,10 @@ public class BulkGeneratorTest {
         cassandraFactory.setArtifact(CASSANDRA_ARTIFACT);
         cassandraFactory.getJvmOptions().add("-Xmx1g");
         cassandraFactory.getJvmOptions().add("-Xms1g");
-        Cassandra cassandra = cassandraFactory.create();
+        Cassandra cassandra = null;
 
         try {
+            cassandra = cassandraFactory.create();
             cassandra.start();
 
             waitForCql();
@@ -64,6 +67,11 @@ public class BulkGeneratorTest {
                 session.execute(String.format("CREATE KEYSPACE %s WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1 };", KEYSPACE));
                 session.execute(String.format("CREATE TABLE IF NOT EXISTS %s.%s (id uuid, name text, surname text, PRIMARY KEY (id));", KEYSPACE, TABLE));
             });
+
+            System.setProperty("cassandra.storagedir", cassandraDir.resolve("data").toAbsolutePath().toString());
+            System.setProperty("cassandra.config", "file://" + findCassandraYaml(new File("target/cassandra/conf").toPath()).toAbsolutePath().toString());
+
+            DatabaseDescriptor.toolInitialization(false);
 
             // SSTable generation
 
@@ -93,8 +101,10 @@ public class BulkGeneratorTest {
             cassandraBulkLoaderSpec.node = "127.0.0.1";
             cassandraBulkLoaderSpec.cassandraYaml = findCassandraYaml(new File("target/cassandra/conf").toPath());
             cassandraBulkLoaderSpec.sstablesDir = Paths.get(folder.getRoot().getAbsolutePath(), KEYSPACE, TABLE);
+            cassandraBulkLoaderSpec.keyspace = "test";
+            cassandraBulkLoaderSpec.cassandraVersion = CassandraVersion.V4;
 
-            final CassandraBulkLoader cassandraBulkLoader = new Cassandra3CustomBulkLoader();
+            final CassandraBulkLoader cassandraBulkLoader = new Cassandra4CustomBulkLoader();
             cassandraBulkLoader.cassandraBulkLoaderSpec = cassandraBulkLoaderSpec;
 
             cassandraBulkLoader.run();
@@ -145,7 +155,7 @@ public class BulkGeneratorTest {
         description = "tool for bulk-loading of fixed data",
         sortOptions = false,
         versionProvider = CLIApplication.class)
-    public static final class TestBulkLoader extends com.instaclustr.sstable.generator.BulkLoader {
+    public static final class TestBulkLoader extends BulkLoader {
 
         @Override
         public Generator getLoader(final BulkLoaderSpec bulkLoaderSpec, final SSTableGenerator ssTableWriter) {
