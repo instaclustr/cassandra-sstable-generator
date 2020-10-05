@@ -45,6 +45,7 @@
   </dependencies>
 
   <build>
+    <finalName>sstable-generator</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

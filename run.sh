@@ -48,7 +48,7 @@ if [ -z "$CLASSPATH" ]; then
     exit 1
 fi
 
-CLASSPATH=$CLASSPATH./impl/target/sstable-generator-impl-1.0.jar:./generator/target/sstable-generator-1.0.jar:./cassandra-4/target/cassandra-4-1.0.jar
+CLASSPATH=$CLASSPATH./impl/target/sstable-generator-impl.jar:./generator/target/sstable-generator.jar:./cassandra-4/target/sstable-generator-cassandra-4.jar
 
 set +x
 

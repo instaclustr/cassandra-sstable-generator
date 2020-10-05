@@ -95,6 +95,7 @@
   </dependencies>
   
   <build>
+    <finalName>sstable-generator-cassandra-4</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
