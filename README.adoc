@@ -19,7 +19,7 @@ The project consists of these modules:
 
 ## Build
 
-`mvn clean instal`
+`mvn clean install`
 
 ## Run
 
