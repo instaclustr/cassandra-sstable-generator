@@ -64,11 +64,11 @@
       <version>${version.cassandra}</version>
       <scope>provided</scope>
     </dependency>
-    
+  
     <dependency>
       <groupId>com.instaclustr</groupId>
       <artifactId>sstable-generator</artifactId>
-      <version>1.0</version>
+      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
     
