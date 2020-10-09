@@ -68,6 +68,11 @@
       <scope>provided</scope>
     </dependency>
     
+    <!--
+      this version emits security warning by dependabot on github
+      however 24.1.1-jre it is fixed in is not compatible with Cassandra 2
+      as it throws build errors
+      -->
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
