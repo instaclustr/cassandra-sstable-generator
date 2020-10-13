@@ -19,7 +19,7 @@
     <version.cassandra.driver>3.0.1</version.cassandra.driver>
     <version.cassandra>3.11.8</version.cassandra>
     
-    <version.junit>4.12</version.junit>
+    <version.junit>4.13.1</version.junit>
     <version.awaitility>3.1.6</version.awaitility>
     <version.embedded.cassandra>3.0.2</version.embedded.cassandra>
     
