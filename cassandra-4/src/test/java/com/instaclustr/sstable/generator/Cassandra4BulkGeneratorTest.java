@@ -34,7 +34,7 @@ import picocli.CommandLine.Command;
 @RunWith(JUnit4.class)
 public class Cassandra4BulkGeneratorTest {
 
-    private static final String CASSANDRA_VERSION = System.getProperty("cassandra.version", "4.0-beta2");
+    private static final String CASSANDRA_VERSION = System.getProperty("cassandra.version", "4.0-beta3");
 
     private static final String KEYSPACE = "test";
 
