@@ -1,21 +1,26 @@
-# cassandra-sstable-generator
+# Cassandra-SStable-Generator
+
+Tools for working with Cassandra sstables
 
 image:https://img.shields.io/maven-central/v/com.instaclustr/sstable-generator.svg?label=Maven%20Central[link=https://search.maven.org/search?q=g:%22com.instaclustr%22%20AND%20a:%22sstable-generator%22]
 
 image:https://circleci.com/gh/instaclustr/cassandra-sstable-generator.svg?style=svg["Instaclustr",link="https://circleci.com/gh/instaclustr/cassandra-sstable-generator"]
 
-CLI tool generating Cassandra SSTables
+- Website: https://www.instaclustr.com/
+- Documentation: [https://www.instaclustr.com/support/documentation/)
 
-This tool is simply generating SSTables programmatically. It uses Cassandra's `CQLSSTableWriter`.
-After the generation of SSTables is finished, you can load them by `sstableloader` tool as usually.
+CLI tool generating Cassandra SSTables.
+
+This tool simply generates SSTables programmatically. It uses Cassandra's `CQLSSTableWriter`.
+After the generation of SSTables is finished, you can load them by `sstableloader` tool as usual.
 
 The project consists of these modules:
 
-* api - impl is coded against this module
-* impl - the implementation of your population logic, depends on `api`
-* generator - the implementation of whole generator CLI application
-* cassandra-3 - the implementation of SSTable generator using internals of Cassandra 3 artifact
-* cassandra- 4 - the implementation of SSTable generator using internals of Cassandra 4 artifact
+* api—impl is coded against this module
+* impl—the implementation of your population logic, depends on `api`
+* generator—the implementation of whole generator CLI application
+* cassandra-3—the implementation of SSTable generator using internals of Cassandra 3 artifact
+* cassandra- 4—the implementation of SSTable generator using internals of Cassandra 4 artifact
 
 ## Build
 
@@ -52,10 +57,10 @@ java \
     --threads 2
 ----
 
-**Please be aware that you need to have all libraries of Apache Cassanra on the classpath as well. For
-that reason, please use `./run.sh` script and modify it to your needs in order to generate sstables.**
+**Please be aware that you need to have all libraries of Apache Cassandra on the classpath as well. For
+that reason, please use `./run.sh` script and modify it to suit your needs in order to generate SStables.**
 
-No `command` executes default command - `help`:
+No `command` executes default command—`help`:
 
 ----
 Usage: <main class> [-V] COMMAND
@@ -66,28 +71,28 @@ Commands:
   fixed   tool for bulk-loading of fixed data
 ----
 
-### `random` command
+### `random` Command
 
 By this command, you are expected to provide data which represents a row in random fashion.
 
-### `csv` command
+### `csv` Command
 
 `csv` command has same arguments as `random` but `--file` is mandatory. There is supposed to be CSV file which
-is representing rows. Each row will be parsed into list of strings passed to `RowMapper` implementation where you
-have to map them to list of objects for Cassandra INSERT statement as values.
+represents rows. Each row will be parsed into a list of strings passed to `RowMapper` implementation where you
+have to map them to list of objects for a Cassandra INSERT statement as values.
 
-### `fixed` command
+### `fixed` Command
 
-By `fixed` command, we will generate SSTable by using the exact list of "rows" with columns. This
+By `fixed` command, we will generate a SSTable by using the exact list of "rows" with columns. This
 will be obvious from the documentation which follows.
 
-## Row generation
+## Row Generation
 
-In order to generate data for all three cases above. you have to implement interface
+In order to generate data for all three cases above you have to implement interface
 `com.instaclustr.cassandra.bulkloader.RowMapper` in `api` module. This implementation should
 be placed in `impl` (or its equivalent) and it should be on a class path.
 
-## RowMapper interface
+## RowMapper Interface
 
 ----
 public interface RowMapper {
@@ -185,21 +190,25 @@ public class RowMapper1 implements RowMapper {
 }
 ----
 
-## SPI mechanism
+## SPI Mechanism
 
-There is Java SPI mechanism for implementation discovery so it means that besides implementing API,
-you have to change `impl/src/main/resources/META-INF/services/com.instaclustr.sstable.generator.RowMapper`
+There is a Java SPI mechanism for implementation discovery, so it means that besides implementing API
+you have to change the `impl/src/main/resources/META-INF/services/com.instaclustr.sstable.generator.RowMapper`
 file containing FQCN of your implemenation on one line.
 
-Once `impl` jar is placed on the class path, it will be automatically discovered by `generator` module so
-you do not need to use any command-line arguments. Mere putting of that JAR on the class path does the job.
+Once the `impl` jar is placed on the class path, it will be automatically discovered by the `generator` module so
+you do not need to use any command-line arguments. Merely putting that JAR on the class path does the job.
 
 The same mechanism works for `cassandra-3/4` jar. In case you want to generate jars by `CQLSSTableWriter`
-for Cassandra 3, just put that jar on the class path. If you want to generate "Cassandra 4 SSTables", place
+for Cassandra 3, just put that jar on the class path. If you want to generate "Cassandra 4 SSTables", place the
 respective `cassandra-4.jar` on the class path as shown above.
 
-This in practice means that you need to compile only `impl` module which contains one class so the compilation
-and JAR building will take literally few seconds (less the 1 sec here). The command line arguments and all will look
-just same.
+In practice this means that you need to compile only an `impl` module which contains one class so the compilation
+and JAR building will take literally a few seconds (less than 1 sec here). The command line arguments for all will look
+the same.
 
-Please see https://www.instaclustr.com/support/documentation/announcements/instaclustr-open-source-project-status/ for Instaclustr support status of this project
+## Further Information
+- See blog by Anup Shirolkar ["A Comprehensive Guide to Cassandra Architecture"](https://www.instaclustr.com/cassandra-architecture/)
+- See blog by Anup Shirolkar ["Apache Cassandra Compaction Strategies
+"](https://www.instaclustr.com/apache-cassandra-compaction/)
+- Please see https://www.instaclustr.com/support/documentation/announcements/instaclustr-open-source-project-status/ for Instaclustr support status of this project
