@@ -6,12 +6,12 @@
   <parent>
     <groupId>com.instaclustr</groupId>
     <artifactId>sstable-generator-parent</artifactId>
-    <version>1.3</version>
+    <version>1.4</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   
   <artifactId>sstable-generator</artifactId>
-  <version>1.3</version>
+  <version>1.4</version>
   
   <properties>
     <super.csv.version>2.1.0</super.csv.version>
@@ -104,6 +104,14 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
       </plugin>
     </plugins>
   </build>

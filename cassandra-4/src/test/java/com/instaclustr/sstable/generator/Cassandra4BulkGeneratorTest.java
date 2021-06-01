@@ -7,16 +7,17 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
-import com.github.nosan.embedded.cassandra.EmbeddedCassandraFactory;
-import com.github.nosan.embedded.cassandra.api.Cassandra;
-import com.github.nosan.embedded.cassandra.api.Version;
-import com.github.nosan.embedded.cassandra.artifact.Artifact;
+import com.github.nosan.embedded.cassandra.Cassandra;
+import com.github.nosan.embedded.cassandra.CassandraBuilder;
+import com.github.nosan.embedded.cassandra.Version;
+import com.github.nosan.embedded.cassandra.WorkingDirectoryDestroyer;
 import com.instaclustr.sstable.generator.cli.CLIApplication;
 import com.instaclustr.sstable.generator.exception.SSTableGeneratorException;
 import com.instaclustr.sstable.generator.specs.BulkLoaderSpec;
@@ -29,49 +30,62 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import picocli.CommandLine.Command;
 
 @RunWith(JUnit4.class)
 public class Cassandra4BulkGeneratorTest {
 
-    private static final String CASSANDRA_VERSION = System.getProperty("cassandra.version", "4.0-beta3");
+    private static final Logger logger = LoggerFactory.getLogger(Cassandra4BulkGeneratorTest.class);
+
+    private static final String CASSANDRA_VERSION = System.getProperty("cassandra4.version", "4.0-rc1");
 
     private static final String KEYSPACE = "test";
-
     private static final String TABLE = "test";
-
-    private static Artifact CASSANDRA_ARTIFACT = Artifact.ofVersion(Version.of(CASSANDRA_VERSION));
+    private static final Path cassandraDir = new File("target/cassandra").toPath().toAbsolutePath();
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
+    private static Cassandra getCassandra() {
+        CassandraBuilder builder = new CassandraBuilder();
+
+        builder.version(Version.parse(CASSANDRA_VERSION));
+        builder.jvmOptions("-Xmx1g");
+        builder.jvmOptions("-Xms1g");
+        builder.workingDirectory(() -> cassandraDir);
+        builder.addConfigProperties(new HashMap<String, String>() {{
+            put("enable_sasi_indexes", "true");
+            put("enable_user_defined_functions", "true");
+        }});
+
+        builder.workingDirectoryDestroyer(WorkingDirectoryDestroyer.deleteOnly("data"));
+
+        return builder.build();
+    }
+
     @Test
     public void testBulkLoading() {
-
-        final Path cassandraDir = new File("target/cassandra").toPath().toAbsolutePath();
-
-        EmbeddedCassandraFactory cassandraFactory = new EmbeddedCassandraFactory();
-        cassandraFactory.setWorkingDirectory(cassandraDir);
-        cassandraFactory.setArtifact(CASSANDRA_ARTIFACT);
-        cassandraFactory.getJvmOptions().add("-Xmx1g");
-        cassandraFactory.getJvmOptions().add("-Xms1g");
-        Cassandra cassandra = null;
-
+        Cassandra cassandra = getCassandra();
         try {
-            cassandra = cassandraFactory.create();
             cassandra.start();
 
             waitForCql();
-
             executeWithSession(session -> {
                 session.execute(String.format("CREATE KEYSPACE %s WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1 };", KEYSPACE));
                 session.execute(String.format("CREATE TABLE IF NOT EXISTS %s.%s (id uuid, name text, surname text, PRIMARY KEY (id));", KEYSPACE, TABLE));
             });
 
-            System.setProperty("cassandra.storagedir", cassandraDir.resolve("data").toAbsolutePath().toString());
-            System.setProperty("cassandra.config", "file://" + findCassandraYaml(new File("target/cassandra/conf").toPath()).toAbsolutePath().toString());
+            cassandra.stop();
+            logger.info("===== Cassandra has stopped");
 
+            System.setProperty("cassandra.storagedir", cassandraDir.resolve("data").toAbsolutePath().toString());
+            System.setProperty("cassandra.config", "file://" + findCassandraYaml(cassandraDir.resolve("conf").toAbsolutePath()));
+
+            logger.info("===== Initialisation of tooling");
             DatabaseDescriptor.toolInitialization(false);
+            logger.info("===== Initialisation of tooling finished");
 
             // SSTable generation
 
@@ -96,6 +110,14 @@ public class Cassandra4BulkGeneratorTest {
             bulkLoader.run();
 
             // Cassandra load
+
+            cassandra.start();
+            waitForCql();
+
+            executeWithSession(session -> {
+                session.execute(String.format("CREATE KEYSPACE %s WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1 };", KEYSPACE));
+                session.execute(String.format("CREATE TABLE IF NOT EXISTS %s.%s (id uuid, name text, surname text, PRIMARY KEY (id));", KEYSPACE, TABLE));
+            });
 
             final CassandraBulkLoaderSpec cassandraBulkLoaderSpec = new CassandraBulkLoaderSpec();
             cassandraBulkLoaderSpec.node = "127.0.0.1";
@@ -158,8 +180,8 @@ public class Cassandra4BulkGeneratorTest {
     public static final class TestBulkLoader extends BulkLoader {
 
         @Override
-        public Generator getLoader(final BulkLoaderSpec bulkLoaderSpec, final SSTableGenerator ssTableWriter) {
-            return new TestGenerator(ssTableWriter);
+        public Generator getLoader(final BulkLoaderSpec bulkLoaderSpec, final SSTableGenerator ssTableGenerator) {
+            return new TestGenerator(ssTableGenerator);
         }
 
         private static final class TestGenerator implements Generator {

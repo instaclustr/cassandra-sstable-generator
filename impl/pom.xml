@@ -6,17 +6,17 @@
   <parent>
     <groupId>com.instaclustr</groupId>
     <artifactId>sstable-generator-parent</artifactId>
-    <version>1.3</version>
+    <version>1.4</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
   <artifactId>sstable-generator-impl</artifactId>
-  <version>1.3</version>
+  <version>1.4</version>
 
   <description>Example of implementation module with generation code</description>
 
   <properties>
-    <version.generator.api>1.3</version.generator.api>
+    <version.generator.api>1.4</version.generator.api>
   </properties>
 
   <dependencies>

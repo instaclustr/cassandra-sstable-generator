@@ -6,18 +6,18 @@
   <parent>
     <groupId>com.instaclustr</groupId>
     <artifactId>sstable-generator-parent</artifactId>
-    <version>1.3</version>
+    <version>1.4</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   
-  <artifactId>sstable-generator-cassandra-3</artifactId>
-  <version>1.3</version>
+  <artifactId>sstable-generator-cassandra-3-11-10</artifactId>
+  <version>1.0</version>
   
   <properties>
     <version.generator.api>${project.version}</version.generator.api>
     <!-- this version is version used in Cassandra 3 itself -->
     <version.cassandra.driver>3.0.1</version.cassandra.driver>
-    <version.cassandra>3.11.9</version.cassandra>
+    <version.cassandra>3.11.10</version.cassandra>
     
     <version.junit>4.13.1</version.junit>
     <version.awaitility>3.1.6</version.awaitility>
@@ -71,7 +71,7 @@
     <dependency>
       <groupId>com.instaclustr</groupId>
       <artifactId>sstable-generator</artifactId>
-      <version>${project.version}</version>
+      <version>1.4</version>
       <scope>test</scope>
     </dependency>
     
@@ -141,6 +141,14 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
       </plugin>
     </plugins>
   </build>

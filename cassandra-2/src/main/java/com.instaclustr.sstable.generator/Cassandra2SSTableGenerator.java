@@ -16,6 +16,9 @@ import org.apache.cassandra.io.sstable.CQLSSTableWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Generator for Cassandra 2
+ */
 public class Cassandra2SSTableGenerator extends SSTableGenerator {
 
     private static final Logger logger = LoggerFactory.getLogger(Cassandra2SSTableGenerator.class);
