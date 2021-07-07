@@ -39,7 +39,7 @@ public class Cassandra4BulkGeneratorTest {
 
     private static final Logger logger = LoggerFactory.getLogger(Cassandra4BulkGeneratorTest.class);
 
-    private static final String CASSANDRA_VERSION = System.getProperty("cassandra4.version", "4.0-rc2");
+    private static final String CASSANDRA_VERSION = System.getProperty("version.cassandra4", "4.0-rc2");
 
     private static final String KEYSPACE = "test";
     private static final String TABLE = "test";

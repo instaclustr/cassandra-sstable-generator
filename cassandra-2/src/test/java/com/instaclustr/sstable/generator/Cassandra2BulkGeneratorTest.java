@@ -32,7 +32,7 @@ import picocli.CommandLine.Command;
 @RunWith(JUnit4.class)
 public class Cassandra2BulkGeneratorTest {
 
-    private static final String CASSANDRA_VERSION = System.getProperty("cassandra.version", "2.2.18");
+    private static final String CASSANDRA_VERSION = System.getProperty("version.cassandra2", "2.2.18");
 
     private static final String KEYSPACE = "test";
 

@@ -13,6 +13,7 @@
     <module>impl</module>
     <module>generator</module>
     <module>cassandra-2</module>
+    <module>cassandra-30</module>
     <module>cassandra-3</module>
     <module>cassandra-4</module>
   </modules>

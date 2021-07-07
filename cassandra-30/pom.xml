@@ -10,21 +10,20 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
   
-  <artifactId>sstable-generator-cassandra-4-0-rc2</artifactId>
+  <artifactId>sstable-generator-cassandra-3-0-24</artifactId>
   <version>1.0</version>
   
   <properties>
     <version.generator.api>${project.version}</version.generator.api>
-    
-    <!-- this version is version used in Cassandra 4 itself -->
-    <version.cassandra.driver>3.11.0</version.cassandra.driver>
-    <version.cassandra4>4.0-rc2</version.cassandra4>
+    <!-- this version is version used in Cassandra 3 itself -->
+    <version.cassandra.driver>3.0.1</version.cassandra.driver>
+    <version.cassandra30>3.0.24</version.cassandra30>
     
     <version.junit>4.13.1</version.junit>
-    <version.awaitility>3.1.2</version.awaitility>
+    <version.awaitility>3.1.6</version.awaitility>
     <version.embedded.cassandra>4.0.1</version.embedded.cassandra>
     
-    <version.maven.shade.plugin>3.2.2</version.maven.shade.plugin>
+    <version.maven.shade.plugin>3.2.4</version.maven.shade.plugin>
   </properties>
   
   <dependencies>
@@ -55,13 +54,17 @@
           <groupId>io.netty</groupId>
           <artifactId>netty-codec</artifactId>
         </exclusion>
+        <exclusion>
+          <groupId>io.netty</groupId>
+          <artifactId>netty-transport</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
     
     <dependency>
       <groupId>org.apache.cassandra</groupId>
       <artifactId>cassandra-all</artifactId>
-      <version>${version.cassandra4}</version>
+      <version>${version.cassandra30}</version>
       <scope>provided</scope>
     </dependency>
   
@@ -71,7 +74,7 @@
       <version>1.4</version>
       <scope>test</scope>
     </dependency>
-  
+
     <dependency>
       <groupId>com.github.nosan</groupId>
       <artifactId>embedded-cassandra</artifactId>
@@ -98,10 +101,11 @@
       <version>${version.awaitility}</version>
       <scope>test</scope>
     </dependency>
+  
   </dependencies>
   
   <build>
-    <finalName>sstable-generator-cassandra-4</finalName>
+    <finalName>sstable-generator-cassandra-30</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -121,7 +125,7 @@
               <transformers>
                 <transformer
                   implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>org.apache.cassandra.tools.Cassandra4CustomBulkLoader</mainClass>
+                  <mainClass>org.apache.cassandra.tools.Cassandra30CustomBulkLoader</mainClass>
                 </transformer>
               </transformers>
               <filters>

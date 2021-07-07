@@ -1,62 +1,53 @@
 package com.instaclustr.sstable.generator;
 
-import static com.datastax.driver.core.querybuilder.QueryBuilder.select;
-import static org.junit.Assert.assertFalse;
-
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
-
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
-import com.github.nosan.embedded.cassandra.EmbeddedCassandraFactory;
-import com.github.nosan.embedded.cassandra.api.Cassandra;
-import com.github.nosan.embedded.cassandra.api.Version;
-import com.github.nosan.embedded.cassandra.artifact.Artifact;
+import com.github.nosan.embedded.cassandra.Cassandra;
+import com.github.nosan.embedded.cassandra.CassandraBuilder;
 import com.instaclustr.sstable.generator.cli.CLIApplication;
 import com.instaclustr.sstable.generator.exception.SSTableGeneratorException;
 import com.instaclustr.sstable.generator.specs.BulkLoaderSpec;
 import com.instaclustr.sstable.generator.specs.CassandraBulkLoaderSpec;
-import org.apache.cassandra.tools.Cassandra3CustomBulkLoader;
+import org.apache.cassandra.tools.Cassandra30CustomBulkLoader;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import picocli.CommandLine.Command;
 
-@RunWith(JUnit4.class)
-public class Cassandra3BulkGeneratorTest {
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
-    private static final String CASSANDRA_VERSION = System.getProperty("version.cassandra311", "3.11.10");
+import static com.datastax.driver.core.querybuilder.QueryBuilder.select;
+import static org.junit.Assert.assertFalse;
+
+@RunWith(JUnit4.class)
+public class Cassandra30BulkGeneratorTest {
+
+    private static final Logger logger = LoggerFactory.getLogger(Cassandra30BulkGeneratorTest.class);
+
+    private static final String CASSANDRA_VERSION = System.getProperty("version.cassandra30", "3.0.24");
 
     private static final String KEYSPACE = "test";
 
     private static final String TABLE = "test";
-
-    private static Artifact CASSANDRA_ARTIFACT = Artifact.ofVersion(Version.of(CASSANDRA_VERSION));
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
     @Test
     public void testBulkLoading() {
-
-        final Path cassandraDir = new File("target/cassandra").toPath().toAbsolutePath();
-
-        EmbeddedCassandraFactory cassandraFactory = new EmbeddedCassandraFactory();
-        cassandraFactory.setWorkingDirectory(cassandraDir);
-        cassandraFactory.setArtifact(CASSANDRA_ARTIFACT);
-        cassandraFactory.getJvmOptions().add("-Xmx1g");
-        cassandraFactory.getJvmOptions().add("-Xms1g");
-        Cassandra cassandra = null;
-
+        Cassandra cassandra = getCassandra();
         try {
-            cassandra = cassandraFactory.create();
             cassandra.start();
 
             waitForCql();
@@ -85,7 +76,6 @@ public class Cassandra3BulkGeneratorTest {
             final BulkLoader bulkLoader = new TestBulkLoader();
 
             bulkLoader.bulkLoaderSpec = bulkLoaderSpec;
-
             bulkLoader.run();
 
             // Cassandra load
@@ -93,11 +83,12 @@ public class Cassandra3BulkGeneratorTest {
             final CassandraBulkLoaderSpec cassandraBulkLoaderSpec = new CassandraBulkLoaderSpec();
             cassandraBulkLoaderSpec.node = "127.0.0.1";
             cassandraBulkLoaderSpec.cassandraYaml = findCassandraYaml(new File("target/cassandra/conf").toPath());
+
+            System.setProperty("cassandra.config", "file://" + cassandraBulkLoaderSpec.cassandraYaml.toAbsolutePath().toString());
             cassandraBulkLoaderSpec.sstablesDir = Paths.get(folder.getRoot().getAbsolutePath(), KEYSPACE, TABLE);
 
-            final CassandraBulkLoader cassandraBulkLoader = new Cassandra3CustomBulkLoader();
+            final CassandraBulkLoader cassandraBulkLoader = new Cassandra30CustomBulkLoader();
             cassandraBulkLoader.cassandraBulkLoaderSpec = cassandraBulkLoaderSpec;
-
             cassandraBulkLoader.run();
 
             executeWithSession(session -> assertFalse(session.execute(select().from(KEYSPACE, TABLE)).all().isEmpty()));
@@ -108,17 +99,17 @@ public class Cassandra3BulkGeneratorTest {
 
     private void waitForCql() {
         org.awaitility.Awaitility.await()
-            .pollInterval(10, TimeUnit.SECONDS)
-            .pollInSameThread()
-            .timeout(1, TimeUnit.MINUTES)
-            .until(() -> {
-                try (final Cluster cluster = Cluster.builder().addContactPoint("127.0.0.1").build()) {
-                    cluster.connect();
-                    return true;
-                } catch (final Exception ex) {
-                    return false;
-                }
-            });
+                .pollInterval(10, TimeUnit.SECONDS)
+                .pollInSameThread()
+                .timeout(1, TimeUnit.MINUTES)
+                .until(() -> {
+                    try (final Cluster cluster = Cluster.builder().addContactPoint("127.0.0.1").build()) {
+                        cluster.connect();
+                        return true;
+                    } catch (final Exception ex) {
+                        return false;
+                    }
+                });
     }
 
     public void executeWithSession(Consumer<Session> supplier) {
@@ -133,19 +124,19 @@ public class Cassandra3BulkGeneratorTest {
 
         try {
             return Files.list(confDir)
-                .filter(path -> path.getFileName().toString().contains("-cassandra.yaml"))
-                .findFirst()
-                .orElseThrow(RuntimeException::new);
+                    .filter(path -> path.getFileName().toString().contains("-cassandra.yaml"))
+                    .findFirst()
+                    .orElseThrow(RuntimeException::new);
         } catch (final Exception e) {
             throw new IllegalStateException("Unable to list or there is not any file ending on -cassandra.yaml" + confDir);
         }
     }
 
     @Command(name = "fixed",
-        mixinStandardHelpOptions = true,
-        description = "tool for bulk-loading of fixed data",
-        sortOptions = false,
-        versionProvider = CLIApplication.class)
+            mixinStandardHelpOptions = true,
+            description = "tool for bulk-loading of fixed data",
+            sortOptions = false,
+            versionProvider = CLIApplication.class)
     public static final class TestBulkLoader extends com.instaclustr.sstable.generator.BulkLoader {
 
         @Override
@@ -170,5 +161,16 @@ public class Cassandra3BulkGeneratorTest {
                 }
             }
         }
+    }
+
+    private Cassandra getCassandra() {
+        return new CassandraBuilder()
+                .version(CASSANDRA_VERSION)
+                .addJvmOptions("-Xmx1g", "-Xms1g")
+                .addSystemProperties(new HashMap<String, String>() {{
+                    put("cassandra.ring_delay_ms", "1000");
+                }})
+                .workingDirectory(() -> new File("target/cassandra").toPath().toAbsolutePath())
+                .build();
     }
 }
