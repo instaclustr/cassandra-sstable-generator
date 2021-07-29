@@ -21,7 +21,7 @@ The project consists of these modules:
 
 ## Build
 
-`mvn clean install`
+`mvn clean install` (or `mvn clean install -DskipTests`)
 
 ## Run
 

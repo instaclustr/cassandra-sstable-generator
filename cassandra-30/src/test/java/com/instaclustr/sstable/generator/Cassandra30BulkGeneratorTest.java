@@ -35,7 +35,7 @@ public class Cassandra30BulkGeneratorTest {
 
     private static final Logger logger = LoggerFactory.getLogger(Cassandra30BulkGeneratorTest.class);
 
-    private static final String CASSANDRA_VERSION = System.getProperty("version.cassandra30", "3.0.24");
+    private static final String CASSANDRA_VERSION = System.getProperty("version.cassandra30", "3.0.25");
 
     private static final String KEYSPACE = "test";
 
