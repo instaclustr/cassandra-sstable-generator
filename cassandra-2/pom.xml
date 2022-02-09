@@ -17,7 +17,7 @@
     <version.generator.api>${project.version}</version.generator.api>
     <!-- this version is version used in Cassandra 4 itself -->
     <version.cassandra.driver>3.0.1</version.cassandra.driver>
-    <version.cassandra2>2.2.19</version.cassandra2>
+    <version.cassandra2>3.0.24</version.cassandra2>
     
     <version.junit>4.13.1</version.junit>
     <version.awaitility>3.1.6</version.awaitility>
