@@ -37,7 +37,6 @@ public class CustomBulkLoader {
                 options.hosts,
                 options.storagePort,
                 options.authProvider,
-                options.sslStoragePort,
                 options.serverEncOptions,
                 buildSSLOptions(options.clientEncOptions)),
             handler,

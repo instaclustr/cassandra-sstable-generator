@@ -6,12 +6,12 @@
   <parent>
     <groupId>com.instaclustr</groupId>
     <artifactId>sstable-generator-parent</artifactId>
-    <version>1.4</version>
+    <version>1.5</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   
   <artifactId>sstable-generator</artifactId>
-  <version>1.4</version>
+  <version>1.5</version>
   
   <properties>
     <super.csv.version>2.1.0</super.csv.version>

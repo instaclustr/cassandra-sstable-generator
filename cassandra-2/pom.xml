@@ -6,12 +6,12 @@
   <parent>
     <groupId>com.instaclustr</groupId>
     <artifactId>sstable-generator-parent</artifactId>
-    <version>1.4</version>
+    <version>1.5</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   
   <artifactId>sstable-generator-cassandra-2-2-19</artifactId>
-  <version>1.0</version>
+  <version>1.1</version>
   
   <properties>
     <version.generator.api>${project.version}</version.generator.api>
@@ -30,7 +30,7 @@
     <dependency>
       <groupId>com.instaclustr</groupId>
       <artifactId>sstable-generator-api</artifactId>
-      <version>1.4</version>
+      <version>1.5</version>
     </dependency>
     
     <dependency>
@@ -82,7 +82,7 @@
     <dependency>
       <groupId>com.instaclustr</groupId>
       <artifactId>sstable-generator</artifactId>
-      <version>1.4</version>
+      <version>1.5</version>
       <scope>test</scope>
     </dependency>
     

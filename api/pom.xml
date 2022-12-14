@@ -7,12 +7,12 @@
   <parent>
     <groupId>com.instaclustr</groupId>
     <artifactId>sstable-generator-parent</artifactId>
-    <version>1.4</version>
+    <version>1.5</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   
   <artifactId>sstable-generator-api</artifactId>
-  <version>1.4</version>
+  <version>1.5</version>
   
   <properties>
     <version.jfairy>0.6.3</version.jfairy>
