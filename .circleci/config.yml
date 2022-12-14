@@ -11,7 +11,7 @@ jobs:
 
       - checkout
 
-      - run: mvn install -Dversion.cassandra2=2.2.19 -Dversion.cassandra30=3.0.25 -Dversion.cassandra311=3.11.11 -Dversion.cassandra4=4.0.0
+      - run: mvn install -Dversion.cassandra2=2.2.19 -Dversion.cassandra30=3.0.28 -Dversion.cassandra311=3.11.13 -Dversion.cassandra4=4.0.0 -Dversion.cassandra41=4.1.0
 
       - store_test_results:
           path: target/surefire-reports
